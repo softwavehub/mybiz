@@ -25,12 +25,14 @@ class AdminDashboardController extends Controller
     {
         // 1. Real Database Aggregated Metrics (§5.1.1)
         $totalOrders = Order::count();
-        $gmv = OrderLineItem::sum('total_price') ?? 0.00;
-        $platformCommission = OrderLineItem::sum('platform_commission') ?? 0.00;
-        $pgFees = OrderLineItem::sum('pg_fee') ?? 0.00;
+        
+        $gmv = OrderLineItem::selectRaw('SUM(retail_price * quantity) as total')->value('total') ?? 0.00;
+        $platformCommission = OrderLineItem::selectRaw('SUM(platform_commission * quantity) as total')->value('total') ?? 0.00;
+        $pgFees = OrderLineItem::selectRaw('SUM(pg_fee * quantity) as total')->value('total') ?? 0.00;
+        
         $escrowBalance = OrderLineItem::whereHas('order', function ($q) {
             $q->where('escrow_status', 'holding');
-        })->sum('base_price') ?? 0.00;
+        })->selectRaw('SUM(base_price * quantity) as total')->value('total') ?? 0.00;
 
         $activeDisputesCount = Dispute::where('status', 'open')->count();
 
