@@ -22,7 +22,6 @@ class ProductVariant extends Model
     protected $casts = [
         'attributes' => 'array',
         'variant_base_price' => 'decimal:2',
-        'quantity' => 'integer',
     ];
 
     public function product()

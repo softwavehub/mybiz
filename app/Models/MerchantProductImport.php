@@ -12,18 +12,17 @@ class MerchantProductImport extends Model
     protected $fillable = [
         'merchant_id',
         'product_id',
-        'imported_variant_ids',
-        'pricing_mode',
-        'fixed_price',
+        'custom_title',
         'markup_percentage',
-        'collection_tags',
+        'retail_price',
+        'is_active',
+        'grace_period_expires_at',
     ];
 
     protected $casts = [
-        'imported_variant_ids' => 'array',
-        'collection_tags' => 'array',
-        'fixed_price' => 'decimal:2',
         'markup_percentage' => 'decimal:2',
+        'retail_price' => 'decimal:2',
+        'is_active' => 'boolean',
     ];
 
     public function merchant()

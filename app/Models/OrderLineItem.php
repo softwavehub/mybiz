@@ -11,29 +11,21 @@ class OrderLineItem extends Model
 
     protected $fillable = [
         'order_id',
+        'product_id',
         'product_variant_id',
+        'sku',
         'product_name',
-        'hsn_code',
-        'gst_rate',
-        'base_price',
-        'shipping_fee',
-        'platform_commission',
-        'pg_fee',
-        'price_floor',
-        'retail_price',
-        'merchant_profit',
+        'variant_attributes',
         'quantity',
+        'unit_base_price',
+        'unit_retail_price',
+        'total_price',
     ];
 
     protected $casts = [
-        'base_price' => 'decimal:2',
-        'shipping_fee' => 'decimal:2',
-        'platform_commission' => 'decimal:2',
-        'pg_fee' => 'decimal:2',
-        'price_floor' => 'decimal:2',
-        'retail_price' => 'decimal:2',
-        'merchant_profit' => 'decimal:2',
-        'gst_rate' => 'decimal:2',
+        'unit_base_price' => 'decimal:2',
+        'unit_retail_price' => 'decimal:2',
+        'total_price' => 'decimal:2',
     ];
 
     public function order()
@@ -41,8 +33,8 @@ class OrderLineItem extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function productVariant()
+    public function product()
     {
-        return $this->belongsTo(ProductVariant::class);
+        return $this->belongsTo(Product::class);
     }
 }
