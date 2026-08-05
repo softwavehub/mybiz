@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SellerProductController;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminApprovalController;
 use App\Http\Controllers\MerchantCatalogController;
 use App\Http\Controllers\CheckoutController;
@@ -30,9 +31,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // 3. Super Admin Engine (Protected: Admin Only)
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::post('/sellers/{seller}/toggle-status', [AdminDashboardController::class, 'toggleSellerStatus'])->name('admin.sellers.toggle-status');
+    Route::post('/sellers/{seller}/escrow-tier', [AdminDashboardController::class, 'updateEscrowTier'])->name('admin.sellers.escrow-tier');
+    Route::post('/orders/{order}/release-escrow', [AdminDashboardController::class, 'releaseEscrow'])->name('admin.orders.release-escrow');
+    Route::post('/categories/{category}/toggle', [AdminDashboardController::class, 'toggleCategory'])->name('admin.categories.toggle');
+    Route::post('/feature-flags/{flag}/toggle', [AdminDashboardController::class, 'toggleFeatureFlag'])->name('admin.feature-flags.toggle');
 
     Route::get('/approvals', [AdminApprovalController::class, 'index'])->name('admin.approvals.index');
     Route::post('/products/{product}/approve', [AdminApprovalController::class, 'approveProduct'])->name('admin.products.approve');
