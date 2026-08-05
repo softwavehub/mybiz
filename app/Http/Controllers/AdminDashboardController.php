@@ -30,8 +30,9 @@ class AdminDashboardController extends Controller
         $platformCommission = OrderLineItem::selectRaw('SUM(platform_commission * quantity) as total')->value('total') ?? 0.00;
         $pgFees = OrderLineItem::selectRaw('SUM(pg_fee * quantity) as total')->value('total') ?? 0.00;
         
+        // Active Escrow Hold Tank = Orders not yet delivered (§3.5)
         $escrowBalance = OrderLineItem::whereHas('order', function ($q) {
-            $q->where('escrow_status', 'holding');
+            $q->whereIn('status', ['placed', 'packed', 'shipped', 'in_transit']);
         })->selectRaw('SUM(base_price * quantity) as total')->value('total') ?? 0.00;
 
         $activeDisputesCount = Dispute::where('status', 'open')->count();
@@ -53,7 +54,7 @@ class AdminDashboardController extends Controller
         });
 
         // 3. Escrow Clearance Queue (§3.5)
-        $escrowOrders = Order::where('escrow_status', 'holding')
+        $escrowOrders = Order::whereIn('status', ['placed', 'packed', 'shipped', 'in_transit'])
             ->with(['merchant', 'seller', 'lineItems'])
             ->latest()
             ->get();
@@ -125,8 +126,8 @@ class AdminDashboardController extends Controller
     public function releaseEscrow(Order $order)
     {
         $order->update([
-            'escrow_status' => 'released',
-            'released_at' => now(),
+            'status' => 'delivered',
+            'delivered_at' => now(),
         ]);
 
         return back()->with('success', "Escrow funds for Order #{$order->order_number} released to seller and merchant accounts.");
