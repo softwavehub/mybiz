@@ -3,15 +3,73 @@
 @section('title', 'Login | mybiz Platform')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center p-4 bg-slate-950">
+<div class="min-h-screen flex items-center justify-center p-4 bg-slate-950" x-data="{ email: '{{ old('email', '') }}', password: '', copiedMessage: '' }">
     <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl">
         <!-- Logo & Header -->
-        <div class="text-center mb-8">
+        <div class="text-center mb-6">
             <div class="inline-flex w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 items-center justify-center font-black text-2xl text-white shadow-lg shadow-indigo-500/30 mb-3">
                 m
             </div>
             <h1 class="text-2xl font-black text-white tracking-tight">Welcome Back</h1>
             <p class="text-slate-400 text-xs mt-1">Sign in to your mybiz Admin, Merchant, or Seller desk</p>
+        </div>
+
+        <!-- 1-Click Demo Credentials Quick Fill Buttons -->
+        <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-4 mb-6">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-400">⚡ Instant 1-Click Demo Logins</span>
+                <span x-show="copiedMessage" x-text="copiedMessage" class="text-[10px] font-bold text-emerald-400 animate-pulse"></span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+                <!-- Admin Demo -->
+                <button
+                    type="button"
+                    @click="
+                        email = 'admin@mybiz.com';
+                        password = 'Password123';
+                        navigator.clipboard.writeText('admin@mybiz.com / Password123');
+                        copiedMessage = '✓ Admin Filled!';
+                        setTimeout(() => copiedMessage = '', 2500);
+                    "
+                    class="bg-indigo-950/60 hover:bg-indigo-900/80 border border-indigo-500/30 text-indigo-300 rounded-xl p-2.5 text-center transition group"
+                >
+                    <span class="block text-xs font-bold text-white group-hover:scale-105 transition">🛡️ Admin</span>
+                    <span class="text-[9px] text-slate-400 block font-mono mt-0.5">Click to Fill</span>
+                </button>
+
+                <!-- Merchant Demo -->
+                <button
+                    type="button"
+                    @click="
+                        email = 'merchant@mybiz.com';
+                        password = 'Password123';
+                        navigator.clipboard.writeText('merchant@mybiz.com / Password123');
+                        copiedMessage = '✓ Merchant Filled!';
+                        setTimeout(() => copiedMessage = '', 2500);
+                    "
+                    class="bg-purple-950/60 hover:bg-purple-900/80 border border-purple-500/30 text-purple-300 rounded-xl p-2.5 text-center transition group"
+                >
+                    <span class="block text-xs font-bold text-white group-hover:scale-105 transition">🏪 Merchant</span>
+                    <span class="text-[9px] text-slate-400 block font-mono mt-0.5">Click to Fill</span>
+                </button>
+
+                <!-- Seller Demo -->
+                <button
+                    type="button"
+                    @click="
+                        email = 'seller@mybiz.com';
+                        password = 'Password123';
+                        navigator.clipboard.writeText('seller@mybiz.com / Password123');
+                        copiedMessage = '✓ Seller Filled!';
+                        setTimeout(() => copiedMessage = '', 2500);
+                    "
+                    class="bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/30 text-emerald-300 rounded-xl p-2.5 text-center transition group"
+                >
+                    <span class="block text-xs font-bold text-white group-hover:scale-105 transition">🏭 Seller</span>
+                    <span class="text-[9px] text-slate-400 block font-mono mt-0.5">Click to Fill</span>
+                </button>
+            </div>
         </div>
 
         @if (session('error'))
@@ -45,7 +103,7 @@
                 <input
                     type="email"
                     name="email"
-                    value="{{ old('email') }}"
+                    x-model="email"
                     required
                     placeholder="name@business.com"
                     class="w-full bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white outline-none transition"
@@ -60,15 +118,19 @@
                 <input
                     type="password"
                     name="password"
+                    x-model="password"
                     required
                     placeholder="••••••••"
                     class="w-full bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white outline-none transition"
                 />
             </div>
 
-            <div class="flex items-center">
-                <input type="checkbox" name="remember" id="remember" class="w-4 h-4 rounded bg-slate-950 border-slate-800 text-indigo-600 focus:ring-indigo-500">
-                <label for="remember" class="ml-2 text-xs text-slate-400 font-medium">Remember me on this device</label>
+            <div class="flex items-center justify-between text-xs">
+                <div class="flex items-center">
+                    <input type="checkbox" name="remember" id="remember" class="w-4 h-4 rounded bg-slate-950 border-slate-800 text-indigo-600 focus:ring-indigo-500">
+                    <label for="remember" class="ml-2 text-slate-400 font-medium">Remember me</label>
+                </div>
+                <span class="text-slate-500">Demo Password: <strong class="text-slate-300 font-mono">Password123</strong></span>
             </div>
 
             <button
