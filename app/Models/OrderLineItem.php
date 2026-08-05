@@ -11,15 +11,18 @@ class OrderLineItem extends Model
 
     protected $fillable = [
         'order_id',
-        'product_id',
         'product_variant_id',
-        'sku',
         'product_name',
-        'variant_attributes',
+        'hsn_code',
+        'gst_rate',
+        'base_price',
+        'shipping_fee',
+        'platform_commission',
+        'pg_fee',
+        'price_floor',
+        'retail_price',
+        'merchant_profit',
         'quantity',
-        'unit_base_price',
-        'unit_retail_price',
-        'total_price',
     ];
 
     protected $casts = [
@@ -33,8 +36,8 @@ class OrderLineItem extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function product()
+    public function productVariant()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(ProductVariant::class);
     }
 }
