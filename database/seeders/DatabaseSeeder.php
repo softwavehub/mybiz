@@ -16,7 +16,6 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderLineItem;
 use App\Models\RejectionReason;
-use App\Services\LedgerService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -142,22 +141,12 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        ProductVariant::firstOrCreate(
+        $v1 = ProductVariant::firstOrCreate(
             ['sku' => 'HD-BLK-M'],
             [
                 'product_id' => $p1->id,
                 'attributes' => ['Size' => 'M', 'Color' => 'Jet Black'],
                 'quantity' => 120,
-                'thumbnail_image' => 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600',
-            ]
-        );
-
-        ProductVariant::firstOrCreate(
-            ['sku' => 'HD-BLK-L'],
-            [
-                'product_id' => $p1->id,
-                'attributes' => ['Size' => 'L', 'Color' => 'Jet Black'],
-                'quantity' => 85,
                 'thumbnail_image' => 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600',
             ]
         );
@@ -181,7 +170,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        ProductVariant::firstOrCreate(
+        $v2 = ProductVariant::firstOrCreate(
             ['sku' => 'TEE-WHT-L'],
             [
                 'product_id' => $p2->id,
@@ -210,7 +199,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        ProductVariant::firstOrCreate(
+        $v3 = ProductVariant::firstOrCreate(
             ['sku' => 'BAG-CANVAS-OLV'],
             [
                 'product_id' => $p3->id,
@@ -252,17 +241,29 @@ class DatabaseSeeder extends Seeder
         // 9. Merchant Product Imports
         MerchantProductImport::firstOrCreate(
             ['merchant_id' => $merchant->id, 'product_id' => $p1->id],
-            ['custom_title' => 'Heavyweight Unisex Hoodie', 'markup_percentage' => 30.00, 'retail_price' => 749.00, 'is_active' => true]
+            [
+                'imported_variant_ids' => json_encode([$v1->id]),
+                'pricing_mode' => 'markup_rule',
+                'markup_percentage' => 30.00,
+            ]
         );
 
         MerchantProductImport::firstOrCreate(
             ['merchant_id' => $merchant->id, 'product_id' => $p2->id],
-            ['custom_title' => 'Cotton Oversized Graphic Tee', 'markup_percentage' => 35.00, 'retail_price' => 399.00, 'is_active' => true]
+            [
+                'imported_variant_ids' => json_encode([$v2->id]),
+                'pricing_mode' => 'markup_rule',
+                'markup_percentage' => 35.00,
+            ]
         );
 
         MerchantProductImport::firstOrCreate(
             ['merchant_id' => $merchant->id, 'product_id' => $p3->id],
-            ['custom_title' => 'Waterproof Canvas Backpack', 'markup_percentage' => 32.00, 'retail_price' => 1099.00, 'is_active' => true]
+            [
+                'imported_variant_ids' => json_encode([$v3->id]),
+                'pricing_mode' => 'markup_rule',
+                'markup_percentage' => 32.00,
+            ]
         );
 
         // 10. Sample Customers & Orders
@@ -294,7 +295,7 @@ class DatabaseSeeder extends Seeder
             ['order_id' => $order1->id, 'sku' => 'HD-BLK-M'],
             [
                 'product_id' => $p1->id,
-                'product_variant_id' => $p1->variants->first()->id,
+                'product_variant_id' => $v1->id,
                 'product_name' => $p1->name,
                 'variant_attributes' => json_encode(['Size' => 'M', 'Color' => 'Jet Black']),
                 'quantity' => 2,
