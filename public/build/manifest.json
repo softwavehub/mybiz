@@ -1,18 +1,4 @@
 {
-  "_createLucideIcon-DVUVkAEV.js": {
-    "file": "assets/createLucideIcon-DVUVkAEV.js",
-    "name": "createLucideIcon",
-    "imports": [
-      "resources/js/app.jsx"
-    ]
-  },
-  "_truck-DGsU8TCH.js": {
-    "file": "assets/truck-DGsU8TCH.js",
-    "name": "truck",
-    "imports": [
-      "_createLucideIcon-DVUVkAEV.js"
-    ]
-  },
   "resources/css/app.css": {
     "file": "assets/app-BtTiCOH6.css",
     "name": "app",
@@ -22,59 +8,11 @@
     "src": "resources/css/app.css",
     "isEntry": true
   },
-  "resources/js/Pages/Admin/Dashboard.jsx": {
-    "file": "assets/Dashboard-Dw21N5qv.js",
-    "name": "Dashboard",
-    "src": "resources/js/Pages/Admin/Dashboard.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.jsx",
-      "_createLucideIcon-DVUVkAEV.js"
-    ]
-  },
-  "resources/js/Pages/Merchant/Dashboard.jsx": {
-    "file": "assets/Dashboard-C4K4gJ1M.js",
-    "name": "Dashboard",
-    "src": "resources/js/Pages/Merchant/Dashboard.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.jsx",
-      "_createLucideIcon-DVUVkAEV.js"
-    ]
-  },
-  "resources/js/Pages/Seller/Dashboard.jsx": {
-    "file": "assets/Dashboard-DS_BlIb7.js",
-    "name": "Dashboard",
-    "src": "resources/js/Pages/Seller/Dashboard.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.jsx",
-      "_createLucideIcon-DVUVkAEV.js",
-      "_truck-DGsU8TCH.js"
-    ]
-  },
-  "resources/js/Pages/Storefront/Index.jsx": {
-    "file": "assets/Index-F65o6UpZ.js",
-    "name": "Index",
-    "src": "resources/js/Pages/Storefront/Index.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.jsx",
-      "_createLucideIcon-DVUVkAEV.js",
-      "_truck-DGsU8TCH.js"
-    ]
-  },
   "resources/js/app.jsx": {
-    "file": "assets/app-tsH-T4DY.js",
+    "file": "assets/app-BJ4ubAXK.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,
-    "dynamicImports": [
-      "resources/js/Pages/Admin/Dashboard.jsx",
-      "resources/js/Pages/Merchant/Dashboard.jsx",
-      "resources/js/Pages/Seller/Dashboard.jsx",
-      "resources/js/Pages/Storefront/Index.jsx"
-    ],
     "css": [
       "assets/app-BtTiCOH6.css"
     ]
