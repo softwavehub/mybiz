@@ -71,36 +71,31 @@ class CheckoutController extends Controller
             $pgFee = $pricing['pg_fee'] * $data['quantity'];
             $merchantProfit = ($unitRetailPrice - $pricing['absolute_price_floor']) * $data['quantity'];
 
-            // 3. Create Immutable Order Record
+            // 3. Create Order Header Record
             $order = Order::create([
                 'order_number' => 'ORD-' . strtoupper(Str::random(8)),
                 'merchant_id' => $merchant->id,
-                'customer_id' => $customer->id,
                 'seller_id' => $product->seller_id,
-                'total_amount' => $totalAmount,
-                'seller_amount' => $sellerAmount,
-                'platform_commission' => $platformCommission,
-                'pg_fee' => $pgFee,
-                'merchant_profit' => $merchantProfit,
-                'escrow_status' => 'holding',
-                'order_status' => 'placed', // §3.1 State Machine
-                'shipping_address' => $data['shipping_address'],
-                'pincode' => $data['pincode'],
-                'cancellation_window_closes_at' => now()->addHours(24),
+                'customer_id' => $customer->id,
+                'status' => 'placed',
+                'placed_at' => now(),
             ]);
 
-            // 4. Create Snapshot Order Line Item
+            // 4. Create Immutable Snapshot Order Line Item
             OrderLineItem::create([
                 'order_id' => $order->id,
-                'product_id' => $product->id,
                 'product_variant_id' => $variant->id,
-                'sku' => $variant->sku,
                 'product_name' => $product->name,
-                'variant_attributes' => json_encode($variant->attributes),
+                'hsn_code' => $product->hsn_code,
+                'gst_rate' => $product->gst_rate,
+                'base_price' => $product->base_price,
+                'shipping_fee' => $product->shipping_zone_a,
+                'platform_commission' => $pricing['platform_commission'],
+                'pg_fee' => $pricing['pg_fee'],
+                'price_floor' => $pricing['absolute_price_floor'],
+                'retail_price' => $unitRetailPrice,
+                'merchant_profit' => ($unitRetailPrice - $pricing['absolute_price_floor']),
                 'quantity' => $data['quantity'],
-                'unit_base_price' => $product->base_price,
-                'unit_retail_price' => $unitRetailPrice,
-                'total_price' => $totalAmount,
             ]);
 
             // 5. Decrement Inventory
@@ -128,7 +123,7 @@ class CheckoutController extends Controller
     public function trackOrder(string $orderNumber)
     {
         $order = Order::where('order_number', $orderNumber)
-            ->with(['merchant', 'customer', 'seller', 'lineItems'])
+            ->with(['merchant', 'customer', 'seller', 'lineItems.productVariant'])
             ->firstOrFail();
 
         return view('orders.track', compact('order'));

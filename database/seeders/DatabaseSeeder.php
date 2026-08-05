@@ -278,30 +278,25 @@ class DatabaseSeeder extends Seeder
                 'merchant_id' => $merchant->id,
                 'customer_id' => $customer->id,
                 'seller_id' => $seller->id,
-                'total_amount' => 1498.00,
-                'seller_amount' => 1020.00,
-                'platform_commission' => 149.80,
-                'pg_fee' => 29.96,
-                'merchant_profit' => 298.24,
-                'escrow_status' => 'holding',
-                'order_status' => 'placed',
-                'shipping_address' => '402 Sunrise Heights, Bandra West, Mumbai',
-                'pincode' => '400050',
-                'cancellation_window_closes_at' => now()->addHours(20),
+                'status' => 'placed',
+                'placed_at' => now(),
             ]
         );
 
         OrderLineItem::firstOrCreate(
-            ['order_id' => $order1->id, 'sku' => 'HD-BLK-M'],
+            ['order_id' => $order1->id, 'product_variant_id' => $v1->id],
             [
-                'product_id' => $p1->id,
-                'product_variant_id' => $v1->id,
                 'product_name' => $p1->name,
-                'variant_attributes' => json_encode(['Size' => 'M', 'Color' => 'Jet Black']),
+                'hsn_code' => $p1->hsn_code,
+                'gst_rate' => $p1->gst_rate,
+                'base_price' => $p1->base_price,
+                'shipping_fee' => $p1->shipping_zone_a,
+                'platform_commission' => 51.00,
+                'pg_fee' => 10.20,
+                'price_floor' => 579.54,
+                'retail_price' => 749.00,
+                'merchant_profit' => 169.46,
                 'quantity' => 2,
-                'unit_base_price' => 450.00,
-                'unit_retail_price' => 749.00,
-                'total_price' => 1498.00,
             ]
         );
     }
