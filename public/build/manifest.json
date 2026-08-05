@@ -1,4 +1,11 @@
 {
+  "_createLucideIcon-BHS8KH-N.js": {
+    "file": "assets/createLucideIcon-BHS8KH-N.js",
+    "name": "createLucideIcon",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
   "resources/css/app.css": {
     "file": "assets/app-BtTiCOH6.css",
     "name": "app",
@@ -8,11 +15,56 @@
     "src": "resources/css/app.css",
     "isEntry": true
   },
-  "resources/js/app.jsx": {
-    "file": "assets/app-6ASw044m.js",
+  "resources/js/Pages/Admin/Dashboard.vue": {
+    "file": "assets/Dashboard-DWnYVpBQ.js",
+    "name": "Dashboard",
+    "src": "resources/js/Pages/Admin/Dashboard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_createLucideIcon-BHS8KH-N.js"
+    ]
+  },
+  "resources/js/Pages/Merchant/Dashboard.vue": {
+    "file": "assets/Dashboard-C6SBnRSh.js",
+    "name": "Dashboard",
+    "src": "resources/js/Pages/Merchant/Dashboard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_createLucideIcon-BHS8KH-N.js"
+    ]
+  },
+  "resources/js/Pages/Seller/Dashboard.vue": {
+    "file": "assets/Dashboard-B2IvYXvj.js",
+    "name": "Dashboard",
+    "src": "resources/js/Pages/Seller/Dashboard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_createLucideIcon-BHS8KH-N.js"
+    ]
+  },
+  "resources/js/Pages/Storefront/Index.vue": {
+    "file": "assets/Index-BKznBjcW.js",
+    "name": "Index",
+    "src": "resources/js/Pages/Storefront/Index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CS2FJ9Wr.js",
     "name": "app",
-    "src": "resources/js/app.jsx",
+    "src": "resources/js/app.js",
     "isEntry": true,
+    "dynamicImports": [
+      "resources/js/Pages/Admin/Dashboard.vue",
+      "resources/js/Pages/Merchant/Dashboard.vue",
+      "resources/js/Pages/Seller/Dashboard.vue",
+      "resources/js/Pages/Storefront/Index.vue"
+    ],
     "css": [
       "assets/app-BtTiCOH6.css"
     ]
