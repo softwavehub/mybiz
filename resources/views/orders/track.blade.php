@@ -12,12 +12,12 @@
                 <h1 class="text-3xl font-black text-white flex items-center gap-3">
                     {{ $order->order_number }}
                     <span class="text-xs font-extrabold px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 rounded-full">
-                        {{ strtoupper($order->order_status) }}
+                        {{ strtoupper($order->status) }}
                     </span>
                 </h1>
             </div>
             <span class="text-xs text-slate-400 font-mono bg-slate-950 px-3.5 py-2 rounded-xl border border-slate-800">
-                Escrow Status: <strong class="text-amber-400">{{ strtoupper($order->escrow_status) }}</strong>
+                Escrow Status: <strong class="text-amber-400">{{ $order->status === 'delivered' ? 'RELEASED' : 'HOLDING' }}</strong>
             </span>
         </div>
 
@@ -40,21 +40,21 @@
 
                 <!-- Packed -->
                 <div class="space-y-2">
-                    <div class="w-8 h-8 rounded-full {{ in_array($order->order_status, ['packed', 'shipped', 'delivered']) ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-500' }} flex items-center justify-center font-bold mx-auto">2</div>
+                    <div class="w-8 h-8 rounded-full {{ in_array($order->status, ['packed', 'shipped', 'delivered']) ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-500' }} flex items-center justify-center font-bold mx-auto">2</div>
                     <span class="font-semibold text-slate-300 block">Packed</span>
                     <span class="text-[10px] text-slate-500">Supplier Packing</span>
                 </div>
 
                 <!-- Shipped -->
                 <div class="space-y-2">
-                    <div class="w-8 h-8 rounded-full {{ in_array($order->order_status, ['shipped', 'delivered']) ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-500' }} flex items-center justify-center font-bold mx-auto">3</div>
+                    <div class="w-8 h-8 rounded-full {{ in_array($order->status, ['shipped', 'delivered']) ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-500' }} flex items-center justify-center font-bold mx-auto">3</div>
                     <span class="font-semibold text-slate-300 block">Shipped</span>
                     <span class="text-[10px] text-slate-500">Blind AWB</span>
                 </div>
 
                 <!-- Delivered -->
                 <div class="space-y-2">
-                    <div class="w-8 h-8 rounded-full {{ $order->order_status === 'delivered' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-500' }} flex items-center justify-center font-bold mx-auto">4</div>
+                    <div class="w-8 h-8 rounded-full {{ $order->status === 'delivered' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-500' }} flex items-center justify-center font-bold mx-auto">4</div>
                     <span class="font-semibold text-slate-300 block">Delivered</span>
                     <span class="text-[10px] text-slate-500">15-Day Escrow Release</span>
                 </div>
@@ -71,9 +71,9 @@
                         <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
                             <div>
                                 <span class="font-bold text-white block text-sm">{{ $item->product_name }}</span>
-                                <span class="text-slate-400">SKU: {{ $item->sku }} | Qty: {{ $item->quantity }}</span>
+                                <span class="text-slate-400">SKU: {{ $item->productVariant?->sku ?? 'SKU' }} | Qty: {{ $item->quantity }}</span>
                             </div>
-                            <span class="font-extrabold text-white text-base">₹{{ number_format($item->total_price, 2) }}</span>
+                            <span class="font-extrabold text-white text-base">₹{{ number_format($item->retail_price * $item->quantity, 2) }}</span>
                         </div>
                     @endforeach
                 </div>
@@ -85,7 +85,7 @@
                 <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2 text-xs text-slate-300">
                     <p>Customer: <strong class="text-white">{{ $order->customer?->name }}</strong></p>
                     <p>Phone: <span class="text-white">{{ $order->customer?->phone_number }}</span></p>
-                    <p>Address: <span class="text-white">{{ $order->shipping_address }} ({{ $order->pincode }})</span></p>
+                    <p>Address: <span class="text-white">{{ $order->customer?->address }} ({{ $order->customer?->pincode }})</span></p>
                     <div class="pt-2 border-t border-slate-800 text-indigo-400 font-semibold">
                         Sold by: {{ $order->merchant?->store_name }} (White-Label Merchant)
                     </div>
