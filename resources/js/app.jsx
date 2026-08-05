@@ -1,21 +1,24 @@
 import './bootstrap';
 import '../css/app.css';
 
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 
-const appName = import.meta.env.VITE_APP_NAME || 'mybiz';
+const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true });
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `${title} - mybiz`,
     resolve: (name) => {
-        const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true });
-        const mod = pages[`./Pages/${name}.jsx`];
-        return mod?.default || mod;
+        const page = pages[`./Pages/${name}.jsx`];
+        if (!page) {
+            console.error(`Page not found: ./Pages/${name}.jsx`);
+        }
+        return page.default || page;
     },
     setup({ el, App, props }) {
         const root = createRoot(el);
-        root.render(<App {...props} />);
+        root.render(React.createElement(App, props));
     },
     progress: {
         color: '#6366f1',
